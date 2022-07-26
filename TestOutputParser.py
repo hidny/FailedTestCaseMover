@@ -6,12 +6,12 @@ from TestCaseFileObj import TestCaseFileObj
 # TODO: compare fail counts to other output files so we could fill in the table
 
 
-def outputParser(filename):
-    print("Parser output filename: " + filename)
+def outputParser(outputFilename):
+    print("Parser output filename: " + outputFilename)
 
     fileDict = {}
 
-    file1 = open(filename, 'r')
+    file1 = open(outputFilename, 'r')
 
     # TODO: parse output file (The things that has all the test results)
     # And save it to dictionary...
@@ -41,6 +41,13 @@ def outputParser(filename):
 
         # Get next line from file
         line = file1.readline()
+
+        # if line is empty
+        # end of file is reached
+        if not line:
+            break
+
+        line = line.strip()
         prevLine = line
 
         if line.startswith("#") == 0:
@@ -56,7 +63,7 @@ def outputParser(filename):
                                         numFourthFails)
 
                 if currentTestFileName != '':
-                    tmpFileObj = TestCaseFileObj(testFileName, playerName, cardsInHand, '', outcome, failType)
+                    tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, '', outcome, failType)
                     # print("Key: " + tmpFileObj.getKey())
 
                     if tmpFileObj.getKey() in fileDict:
@@ -65,17 +72,15 @@ def outputParser(filename):
 
                     fileDict[tmpFileObj.getKey()] = tmpFileObj
 
-                    #reinit vars just in case;
-                    currentTestFileName = ''
+                    # reinit vars just in case;
                     playerName = ''
                     cardsInHand = ''
                     # folder = ''
                     outcome = 0
                     failType = ''
-                    #End reinit vars
+                    # End reinit vars
 
-
-                testFileName = line.split(" ")[-1]
+                currentTestFileName = line.split(" ")[-1]
                 numTestcases = numTestcases + 1
 
             elif line.startswith("Your name: "):
@@ -113,10 +118,6 @@ def outputParser(filename):
                 numFourthFails = numFourthFails + 1
                 failType = 'fourth'
 
-        # if line is empty
-        # end of file is reached
-        if not line:
-            break
 
         # print("Line{}: {}".format(count, line.strip()))
 
@@ -132,6 +133,8 @@ def outputParser(filename):
     print("numThirdFails: " + str(numThirdFails))
     print("numFourthFails: " + str(numFourthFails))
 
+    return fileDict
+
 
 def sanityCheckNumbersAddUp(numTestcases, numPasses, numFails, numBidFails, numLeadFails, numSecondFails, numThirdFails,
                             numFourthFails):
@@ -141,8 +144,9 @@ def sanityCheckNumbersAddUp(numTestcases, numPasses, numFails, numBidFails, numL
     if numFails != numBidFails + numLeadFails + numSecondFails + numThirdFails + numFourthFails:
         print("WARNING: test cases don't add up 2")
 
+if __name__ == '__main__':
+    outputParser("/Users/Michael/Desktop/july24th-1.txt")
 
-outputParser("/Users/Michael/Desktop/july24th-1.txt")
 
 '''
 import argparse
