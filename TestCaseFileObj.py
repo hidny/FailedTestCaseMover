@@ -5,6 +5,9 @@ LIST_OF_FOLDERS = \
     ("MichaelDebugMadeUp", "Michael", "Michael2021", "Michael2021-2", "doubleMellowTests", "Michael2022-3")
 
 
+# TODO: Add random label as possible input
+# TODO: Add option to add details about when testcase is bid, lead, 2nd, 3rd, 4th
+
 class TestCaseFileObj:
 
     def __init__(self, filename, playerName, cardsInHand, folder='', outcome='', failType=''):
@@ -29,13 +32,13 @@ class TestCaseFileObj:
         for m in self.filename:
             if m.isdigit():
                 cur_str = cur_str + m
-        #print("Find numbers from string:", cur_str)
+        # print("Find numbers from string:", cur_str)
 
         num = -1
         if len(cur_str) > 0:
             num = int(cur_str)
 
-        #print("num: " + str(num))
+        # print("num: " + str(num))
 
         # TODO: 6000 should just be a constant (it's the line to go to debug cases)
         if num >= 6000:
