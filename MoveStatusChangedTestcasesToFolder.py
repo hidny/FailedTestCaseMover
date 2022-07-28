@@ -1,10 +1,13 @@
 from TestOutputParser import outputParser
+import os
+import shutil
 
 # TODO: maybe the path before the folder name could be a config.
 baseTestFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData/testcases"
 
+
 def main():
-    #TODO: make this input:
+    # TODO: make this input:
     dict1 = outputParser("/Users/Michael/Desktop/july24th-1.txt")
 
     dict2 = outputParser("/Users/Michael/Desktop/july24th-2.txt")
@@ -32,10 +35,12 @@ def main():
         print(key)
 
         print("Guess at folder:")
-        print(diffDict[key].getFolderOrGuessAtFolder())
+        print(diffDict[key].getOrigFolderOfTestcase())
 
-        #TODO: copy file to dest dir and overwrite (dest dir = targetFolder)
-        # See: https://stackoverflow.com/questions/7419665/python-move-and-overwrite-files-and-folders
+        shutil.copyfile(
+            baseTestFolderPath + "/" + diffDict[key].getOrigFolderOfTestcase() + "/" + diffDict[key].filename,
+            targetFolder + "/" + diffDict[key].filename)
+
 
 
 if __name__ == '__main__':
