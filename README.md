@@ -5,3 +5,7 @@ This project is still being worked on, but it will probably not take long to com
 
 #TODO: be able to process input from git diff Testcase...
 #TODO: be able to make a git diff call and make a file out of it
+
+#TODO: make constants file
+#TODO: org all util function in single file?
+#TODO: make CLI interface as simple as possible

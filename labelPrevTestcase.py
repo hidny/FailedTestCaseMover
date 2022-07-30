@@ -16,13 +16,13 @@ def appendLabelToFile(filname):
 baseTestFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData/testcases"
 folder = "Michael2022-3"
 
-curTestFolder = baseTestFolderPath + "/" + folder
+curTestFolder = os.path.join(baseTestFolderPath, folder)
 
 files = [f for f in os.listdir(curTestFolder) if os.path.isfile(os.path.join(curTestFolder, f))]
 
 files.sort()
 
-print(files)
+#print(files)
 print(files[-1])
 # End TODO copy/paste code
 
@@ -33,6 +33,6 @@ appendLabelToFile(os.path.join(curTestFolder, files[-1]))
 # TODO: num cards between 2 and 13
 
 for file in reversed(files):
-    if len(makeFileObjectFromFile(curTestFolder, file).cardsInHand.strip().split(" ")) == 5:
+    if len(makeFileObjectFromFile(curTestFolder, file).cardsInHand.strip().split(" ")) == 7:
         appendLabelToFile(os.path.join(curTestFolder, file))
         break

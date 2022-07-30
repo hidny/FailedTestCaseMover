@@ -5,8 +5,6 @@ import shutil
 # TODO: maybe the path before the folder name could be a config.
 baseTestFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData/testcases"
 
-#TODO: move to other file....
-import subprocess
 
 def main():
     # TODO: make this input:
@@ -39,14 +37,10 @@ def main():
         print("Guess at folder:")
         print(diffDict[key].getOrigFolderOfTestcase())
 
-        #TODO: handle filename collisions!
+        # TODO: handle filename collisions!
         shutil.copyfile(
             baseTestFolderPath + "/" + diffDict[key].getOrigFolderOfTestcase() + "/" + diffDict[key].filename,
             targetFolder + "/" + diffDict[key].filename)
-
-        #TODO: remove
-        ##"/Program Files (x86)/Notepad++/notepad++.exe"
-        subprocess.call([r"c:/Program Files (x86)/Notepad++/notepad++.exe", targetFolder + "/" + diffDict[key].filename])
 
 
 if __name__ == '__main__':

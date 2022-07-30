@@ -7,6 +7,8 @@ from TestCaseFileObj import TestCaseFileObj
 
 
 def outputParser(outputFilename):
+    print()
+    print("Reading Testcase Parser output:")
     print("Parser output filename: " + outputFilename)
 
     fileDict = {}
@@ -45,6 +47,18 @@ def outputParser(outputFilename):
         # if line is empty
         # end of file is reached
         if not line:
+            if currentTestFileName != '':
+                # TODO: copy/paste code is bad.
+                tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, '', outcome, failType)
+                # print("Key: " + tmpFileObj.getKey())
+
+                if tmpFileObj.getKey() in fileDict:
+                    print("Warning: duplicate test case: " + tmpFileObj.getKey())
+                    print("Removing prev test case from list")
+
+                fileDict[tmpFileObj.getKey()] = tmpFileObj
+                # end todo: copy/paste code is bad.
+
             break
 
         line = line.strip()
@@ -72,13 +86,13 @@ def outputParser(outputFilename):
 
                     fileDict[tmpFileObj.getKey()] = tmpFileObj
 
-                    # reinit vars just in case;
-                    playerName = ''
-                    cardsInHand = ''
-                    # folder = ''
-                    outcome = 0
-                    failType = ''
-                    # End reinit vars
+                # reinit vars just in case;
+                playerName = ''
+                cardsInHand = ''
+                # folder = ''
+                outcome = 0
+                failType = ''
+                # End reinit vars
 
                 currentTestFileName = line.split(" ")[-1]
                 numTestcases = numTestcases + 1
@@ -118,6 +132,7 @@ def outputParser(outputFilename):
                 numFourthFails = numFourthFails + 1
                 failType = 'fourth'
 
+            # TODO: search for other labels...
 
         # print("Line{}: {}".format(count, line.strip()))
 
@@ -144,9 +159,9 @@ def sanityCheckNumbersAddUp(numTestcases, numPasses, numFails, numBidFails, numL
     if numFails != numBidFails + numLeadFails + numSecondFails + numThirdFails + numFourthFails:
         print("WARNING: test cases don't add up 2")
 
+
 if __name__ == '__main__':
     outputParser("/Users/Michael/Desktop/july24th-1.txt")
-
 
 '''
 import argparse
