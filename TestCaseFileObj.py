@@ -38,10 +38,10 @@ class TestCaseFileObj:
         # print("num: " + str(num))
 
         if num >= Constants.TESTCASE_NUMBER_WHERE_DEBUG_TESTS_START:
-            return "MichaelDebugMadeUp"
+            return Constants.DEBUG_FOLDER_NAME
 
         elif self.playerName in Constants.LIST_OF_FOLDERS_WITH_TESTCASES:
             return self.playerName
 
         else:
-            return "MichaelDebugMadeUp"
+            return Constants.DEBUG_FOLDER_NAME

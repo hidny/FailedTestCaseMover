@@ -1,10 +1,7 @@
 import Constants
-from TestOutputParser import outputParser
 import shutil
 import os
-
-# TODO: maybe the path before the folder name could be a config.
-from UselessTestCaseCrawler import makeFileObjectFromFile
+from TestcaseParsers import makeFileObjectFromFile
 
 
 def main():
@@ -14,7 +11,6 @@ def main():
     files = [f for f in os.listdir(folderPath) if os.path.isfile(os.path.join(folderPath, f))]
 
     for filename in files:
-
         tmpFileObj = makeFileObjectFromFile(folderPath, filename)
 
         shutil.copyfile(
@@ -23,8 +19,6 @@ def main():
         )
 
         os.remove(os.path.join(folderPath, filename))
-
-
 
 
 if __name__ == '__main__':

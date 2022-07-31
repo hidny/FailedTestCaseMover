@@ -25,7 +25,7 @@ print(files[-1])
 appendLabelToFile(os.path.join(curTestFolder, files[-1]))
 
 # TODO: --card for num cards.
-# Example of this workign for num 5
+# Example of this working for num 5
 # TODO: num cards between 2 and 13
 
 for file in reversed(files):

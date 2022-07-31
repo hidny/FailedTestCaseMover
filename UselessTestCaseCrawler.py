@@ -5,7 +5,6 @@ from os.path import isfile, join
 import Constants
 from TestCaseFileObj import TestCaseFileObj
 
-
 # This is actually really slow...
 # maybe save the mapping to a file and only call it if the file is missing entries?
 from TestcaseParsers import makeFileObjectFromFile
@@ -30,6 +29,7 @@ def getAllStandardTestCasesAndFolders():
             print(tmpFileObj.getKey() + "---" + dictTestcases[tmpFileObj.getKey()].folder)
 
     return dictTestcases
+
 
 if __name__ == '__main__':
     getAllStandardTestCasesAndFolders()
