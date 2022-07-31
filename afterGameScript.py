@@ -11,12 +11,13 @@ import Constants
 
 #
 # C:\Users\Michael\Desktop\gitDiff.txt
-from TestOutputParser import sanityCheckNumbersAddUp, outputParser
 
 # TODO: maybe the path before the folder name could be a config.
 
 
 # TODO: Give the option of actually running the git diff command.
+from TestcaseParsers import goThruGitDiff, outputParser
+
 
 def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     gitDiffDict = {}
@@ -97,86 +98,6 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
 
     print("Done moving important new test cases, so monte could analyze them. "
           + str(countTestcasesMoved) + " test cases were moved.")
-
-
-def goThruGitDiff(gitDiffFilepath):
-
-    print()
-    print("Going through TestCaseAndReplayData git diff to find new test cases:")
-
-    file = open(join(gitDiffFilepath), 'r')
-    testFileDict = {}
-
-    previousLine = ''
-
-    currentTestFileName = ''
-    nameOfPlayer = ''
-    cards = ''
-    folder = ''
-
-    count = 0
-
-    while True:
-        count += 1
-
-        # Get next line from file
-        line = file.readline()
-
-        # if line is empty
-        # end of file is reached
-        if not line:
-            break
-
-        if line.startswith("+"):
-            line = line[1:]
-        else:
-            continue
-
-        line = line.strip()
-
-        #print(line)
-
-        if line.startswith("++") and line.endswith(".txt"):
-
-            if currentTestFileName != '':
-                tmpFileObj = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, folder)
-
-                if tmpFileObj.getKey() in testFileDict:
-                    print("Warning: duplicate test case: " + tmpFileObj.getKey())
-                    print("Removing prev test case from list")
-
-                testFileDict[tmpFileObj.getKey()] = tmpFileObj
-
-                # reinit vars just in case;
-                nameOfPlayer = ''
-                cards = ''
-                # End reinit vars
-
-            folder = line.split("/")[-2]
-            currentTestFileName = line.split("/")[-1]
-
-        elif line.startswith("Your name: "):
-            nameOfPlayer = line.split(" ")[2].strip()
-
-        elif previousLine.startswith("Cards in hand:"):
-            cards = line.strip()
-
-        previousLine = line
-
-    file.close()
-
-    lastTestcase = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, folder)
-
-    if lastTestcase.getKey() in testFileDict:
-        print("Warning: duplicate test case 2: " + lastTestcase.getKey())
-        print("Removing prev test case from list 2")
-
-    testFileDict[lastTestcase.getKey()] = lastTestcase
-
-    print("Line count: " + str(count))
-    print("numTestcases: " + str(len(testFileDict)))
-
-    return testFileDict
 
 
 if __name__ == '__main__':

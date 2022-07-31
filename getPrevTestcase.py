@@ -5,7 +5,7 @@ import os
 
 # TODO: --card for num cards last test case has to have.
 import Constants
-from standardTestCaseCrawler import makeFileObjectFromFile
+from UselessTestCaseCrawler import makeFileObjectFromFile
 
 
 curTestFolder = os.path.join(Constants.baseTestFolderPath, Constants.curTestFolderBeingAddedTo)

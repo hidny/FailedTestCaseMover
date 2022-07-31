@@ -8,6 +8,8 @@ from TestCaseFileObj import TestCaseFileObj
 
 # This is actually really slow...
 # maybe save the mapping to a file and only call it if the file is missing entries?
+from TestcaseParsers import makeFileObjectFromFile
+
 
 def getAllStandardTestCasesAndFolders():
     dictTestcases = {}
@@ -28,38 +30,6 @@ def getAllStandardTestCasesAndFolders():
             print(tmpFileObj.getKey() + "---" + dictTestcases[tmpFileObj.getKey()].folder)
 
     return dictTestcases
-
-
-def makeFileObjectFromFile(folderPath, filename):
-    nameOfPlayer = ''
-    cards = ''
-
-    file1 = open(join(folderPath, filename), 'r')
-
-    previousLine = ''
-
-    while True:
-
-        # Get next line from file
-        line = file1.readline()
-
-        if line.startswith("Your name: "):
-            nameOfPlayer = line.split(" ")[2].strip()
-        elif previousLine.startswith("Cards in hand:"):
-            cards = line.strip()
-
-        previousLine = line
-        # if line is empty
-        # end of file is reached
-        if not line:
-            break
-
-    file1.close()
-
-    folder = folderPath.split("/")[-1]
-
-    return TestCaseFileObj(filename, nameOfPlayer, cards, folder)
-
 
 if __name__ == '__main__':
     getAllStandardTestCasesAndFolders()

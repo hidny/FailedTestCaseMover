@@ -1,7 +1,7 @@
 import os
 
 import Constants
-from standardTestCaseCrawler import makeFileObjectFromFile
+from UselessTestCaseCrawler import makeFileObjectFromFile
 
 
 # TODO: number param for how far back

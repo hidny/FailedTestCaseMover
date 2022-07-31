@@ -4,7 +4,7 @@ import shutil
 import os
 
 # TODO: maybe the path before the folder name could be a config.
-from standardTestCaseCrawler import makeFileObjectFromFile
+from UselessTestCaseCrawler import makeFileObjectFromFile
 
 
 def main():
