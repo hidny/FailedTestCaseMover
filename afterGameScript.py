@@ -91,9 +91,13 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
             countTestcasesMoved += testcaseMoved
 
         else:
+            print()
+            print("******************")
             print(
-                "Warning: (In afterGameScript) couldn't find " + key + "in run dictionary (but it was in the git "
-                                                                       "diff)")
+                "Warning: (In afterGameScript) couldn't find key (" + key +
+                ") in run dictionary (but it was in the git diff)")
+            print("******************")
+            print()
 
     # End of dictionary loop
 
