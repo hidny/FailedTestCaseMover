@@ -4,6 +4,7 @@ from os.path import join
 import shutil
 # TODO: put in config:
 from TestCaseFileObj import TestCaseFileObj
+import Constants
 
 # TODO:
 # git diff 4e0a826761cb7d2bbaa8c50dae797383b886f0ec 3c332fcc7e33ad23db814a27d1074ab5d1700345 > C:\Users\Michael\Desktop\gitDiff.txt
@@ -13,7 +14,6 @@ from TestCaseFileObj import TestCaseFileObj
 from TestOutputParser import sanityCheckNumbersAddUp, outputParser
 
 # TODO: maybe the path before the folder name could be a config.
-baseTestFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData/testcases"
 
 
 # TODO: Give the option of actually running the git diff command.
@@ -31,10 +31,10 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     print("Copying failed and important test cases to test folders:")
 
     # TODO: put folders in a list and refactor
-    folderForBids = os.path.join(baseTestFolderPath, "newBidTestcases")
+    folderForBids = os.path.join(Constants.baseTestFolderPath, "newBidTestcases")
 
-    folderForLeadFails = os.path.join(baseTestFolderPath, "newLeadFails")
-    folderForFollowFails = os.path.join(baseTestFolderPath, "newFollowFails")
+    folderForLeadFails = os.path.join(Constants.baseTestFolderPath, "newLeadFails")
+    folderForFollowFails = os.path.join(Constants.baseTestFolderPath, "newFollowFails")
 
     if not os.path.exists(folderForBids):
         os.makedirs(folderForBids)
@@ -48,7 +48,7 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
 
     # TODO: be able to identify when test case is labelled with "(TODO: please test)"
     # TODO: put label in constants file
-    folderForBonusCheck = os.path.join(baseTestFolderPath, "bonusChecks")
+    folderForBonusCheck = os.path.join(Constants.baseTestFolderPath, "bonusChecks")
 
     countTestcasesMoved = 0
 
@@ -58,7 +58,7 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
 
             testcase = runTestCaseDict[key]
 
-            fromPath = os.path.join(baseTestFolderPath, gitDiffDict[key].getOrigFolderOfTestcase(),
+            fromPath = os.path.join(Constants.baseTestFolderPath, gitDiffDict[key].getOrigFolderOfTestcase(),
                                     gitDiffDict[key].filename)
 
             testcaseMoved = 1

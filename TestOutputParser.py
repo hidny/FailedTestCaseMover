@@ -6,6 +6,8 @@ from TestCaseFileObj import TestCaseFileObj
 # TODO: compare fail counts to other output files so we could fill in the table
 
 
+# TODO: Combine with all other parsers in single util file?
+
 def outputParser(outputFilename):
     print()
     print("Reading Testcase Parser output:")

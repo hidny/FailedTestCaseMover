@@ -1,4 +1,6 @@
 import os
+
+import Constants
 from standardTestCaseCrawler import makeFileObjectFromFile
 
 
@@ -12,19 +14,13 @@ def appendLabelToFile(filname):
 # TODO: --card for num cards last test case has to have.
 
 
-# TODO: copy/paste code
-baseTestFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData/testcases"
-folder = "Michael2022-3"
-
-curTestFolder = os.path.join(baseTestFolderPath, folder)
+curTestFolder = os.path.join(Constants.baseTestFolderPath, Constants.curTestFolderBeingAddedTo)
 
 files = [f for f in os.listdir(curTestFolder) if os.path.isfile(os.path.join(curTestFolder, f))]
 
 files.sort()
 
-#print(files)
 print(files[-1])
-# End TODO copy/paste code
 
 appendLabelToFile(os.path.join(curTestFolder, files[-1]))
 

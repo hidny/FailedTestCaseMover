@@ -1,9 +1,9 @@
+import Constants
 from TestOutputParser import outputParser
 import os
 import shutil
 
 # TODO: maybe the path before the folder name could be a config.
-baseTestFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData/testcases"
 
 
 def main():
@@ -12,7 +12,7 @@ def main():
 
     dict2 = outputParser("/Users/Michael/Desktop/july24th-2.txt")
 
-    targetFolder = baseTestFolderPath + "/" + "TestPython"
+    targetFolder = os.path.join(Constants.baseTestFolderPath, "TestPython")
 
     if len(dict1) != len(dict2):
         print("Warning: the dictionaries aren't of the same length!")
@@ -39,8 +39,8 @@ def main():
 
         # TODO: handle filename collisions!
         shutil.copyfile(
-            baseTestFolderPath + "/" + diffDict[key].getOrigFolderOfTestcase() + "/" + diffDict[key].filename,
-            targetFolder + "/" + diffDict[key].filename)
+            os.path.join(Constants.baseTestFolderPath, diffDict[key].getOrigFolderOfTestcase(), diffDict[key].filename),
+            os.path.join(targetFolder, diffDict[key].filename))
 
 
 if __name__ == '__main__':

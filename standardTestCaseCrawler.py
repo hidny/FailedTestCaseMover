@@ -2,21 +2,18 @@ from os import listdir
 from os.path import isfile, join
 
 # TODO: put in config:
+import Constants
 from TestCaseFileObj import TestCaseFileObj
 
-LIST_OF_FOLDERS = \
-    ("MichaelDebugMadeUp", "Michael", "Michael2021", "Michael2021-2", "doubleMellowTests", "Michael2022-3")
-baseTestFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData/testcases"
 
-
-# TODO: this is actually really slow...
+# This is actually really slow...
 # maybe save the mapping to a file and only call it if the file is missing entries?
 
 def getAllStandardTestCasesAndFolders():
     dictTestcases = {}
 
-    for folder in LIST_OF_FOLDERS:
-        folderPath = baseTestFolderPath + "/" + folder
+    for folder in Constants.LIST_OF_FOLDERS_WITH_TESTCASES:
+        folderPath = join(Constants.baseTestFolderPath, folder)
         files = [f for f in listdir(folderPath) if isfile(join(folderPath, f))]
 
         for filename in files:

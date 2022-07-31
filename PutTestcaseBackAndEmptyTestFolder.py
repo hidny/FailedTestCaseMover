@@ -1,5 +1,4 @@
-
-
+import Constants
 from TestOutputParser import outputParser
 import shutil
 import os
@@ -7,11 +6,10 @@ import os
 # TODO: maybe the path before the folder name could be a config.
 from standardTestCaseCrawler import makeFileObjectFromFile
 
-baseTestFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData/testcases"
 
 def main():
     # TODO: make this input:
-    folderPath = baseTestFolderPath + "/" + "TestPython"
+    folderPath = os.path.join(Constants.baseTestFolderPath, "TestPython")
 
     files = [f for f in os.listdir(folderPath) if os.path.isfile(os.path.join(folderPath, f))]
 
@@ -20,11 +18,11 @@ def main():
         tmpFileObj = makeFileObjectFromFile(folderPath, filename)
 
         shutil.copyfile(
-            folderPath + "/" + filename,
-            baseTestFolderPath + "/" + tmpFileObj.getOrigFolderOfTestcase() + "/" + filename
+            os.path.join(folderPath, filename),
+            os.path.join(Constants.baseTestFolderPath, tmpFileObj.getOrigFolderOfTestcase(), filename)
         )
 
-        os.remove(folderPath + "/" + filename)
+        os.remove(os.path.join(folderPath, filename))
 
 
 

@@ -1,12 +1,9 @@
-import re
-
-# TODO: put in config:
-LIST_OF_FOLDERS = \
-    ("MichaelDebugMadeUp", "Michael", "Michael2021", "Michael2021-2", "doubleMellowTests", "Michael2022-3")
 
 
 # TODO: Add random label as possible input
 # TODO: Add option to add details about when testcase is bid, lead, 2nd, 3rd, 4th
+import Constants
+
 
 class TestCaseFileObj:
 
@@ -40,11 +37,10 @@ class TestCaseFileObj:
 
         # print("num: " + str(num))
 
-        # TODO: 6000 should just be a constant (it's the line to go to debug cases)
-        if num >= 6000:
+        if num >= Constants.TESTCASE_NUMBER_WHERE_DEBUG_TESTS_START:
             return "MichaelDebugMadeUp"
 
-        elif self.playerName in LIST_OF_FOLDERS:
+        elif self.playerName in Constants.LIST_OF_FOLDERS_WITH_TESTCASES:
             return self.playerName
 
         else:
