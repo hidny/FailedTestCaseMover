@@ -3,7 +3,6 @@ from os.path import isfile, join
 
 # TODO: put in config:
 import Constants
-from TestCaseFileObj import TestCaseFileObj
 
 # This is actually really slow...
 # maybe save the mapping to a file and only call it if the file is missing entries?

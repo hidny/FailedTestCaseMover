@@ -1,9 +1,6 @@
 import os
-from os.path import join
 
 import shutil
-# TODO: put in config:
-from TestCaseFileObj import TestCaseFileObj
 import Constants
 
 # TODO:
@@ -16,7 +13,8 @@ import Constants
 
 
 # TODO: Give the option of actually running the git diff command.
-from TestcaseParsers import goThruGitDiff, outputParser
+from TestCaseOutcomeCounters import TestCaseOutcomeCounters
+from TestcaseParsers import goThroughGitDiff, outputParser
 
 
 def doAfterGameAnalysis(gitDiffFilePath, outputPath):
@@ -24,7 +22,7 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     if gitDiffFilePath == '':
         pass
     else:
-        gitDiffDict = goThruGitDiff(gitDiffFilePath)
+        gitDiffDict = goThroughGitDiff(gitDiffFilePath)
 
     runTestCaseDict = outputParser(outputPath)
 
@@ -52,6 +50,8 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     folderForBonusCheck = os.path.join(Constants.baseTestFolderPath, "bonusChecks")
 
     countTestcasesMoved = 0
+
+    # Move test cases around:
 
     for key in gitDiffDict:
 
@@ -98,6 +98,37 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
 
     print("Done moving important new test cases, so monte could analyze them. "
           + str(countTestcasesMoved) + " test cases were moved.")
+
+    # Do failure count:
+    counterBefore = TestCaseOutcomeCounters()
+
+    counterAfter = TestCaseOutcomeCounters()
+
+    counterDuring = TestCaseOutcomeCounters()
+
+    for key in runTestCaseDict:
+        # TODO: seperate out failed debug cases...
+        counterAfter.incrementCounterBasedOnTestcaseObj(runTestCaseDict[key])
+
+        if key in gitDiffDict.keys():
+            counterDuring.incrementCounterBasedOnTestcaseObj(runTestCaseDict[key])
+        else:
+            counterBefore.incrementCounterBasedOnTestcaseObj(runTestCaseDict[key])
+
+    counterBefore.printSummaryPercentages("Before")
+
+    counterAfter.printSummaryPercentages("After")
+
+    counterDuring.printSummaryPercentages("During")
+
+    print("Debug:")
+    counterBefore.printCounterSums()
+    counterAfter.printCounterSums()
+    print("Sums to use:")
+    counterDuring.printCounterSums()
+
+    # TODO: Do your best to match the notebook summary.
+    # Example: the sums at the bottom are just for fails during the match
 
 
 if __name__ == '__main__':

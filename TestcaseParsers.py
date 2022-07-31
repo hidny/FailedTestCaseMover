@@ -1,7 +1,7 @@
-from os import listdir
 from os.path import join
 
 from TestCaseFileObj import TestCaseFileObj
+from TestCaseOutcomeCounters import TestCaseOutcomeCounters
 
 
 def makeFileObjectFromFile(folderPath, filename):
@@ -56,16 +56,7 @@ def outputParser(outputFilename):
 
     count = 0
 
-    # TODO: maybe put all these vars in an object
-    numTestcases = 0
-    numPasses = 0
-    numFails = 0
-    numBidFails = 0
-    numLeadFails = 0
-    numSecondFails = 0
-    numThirdFails = 0
-    numFourthFails = 0
-    # END TODO
+    counter = TestCaseOutcomeCounters()
 
     while True:
         count += 1
@@ -77,6 +68,9 @@ def outputParser(outputFilename):
         # end of file is reached
         if not line:
             if currentTestFileName != '':
+
+                counter.sanityCheckNumbersAddUp()
+
                 # TODO: copy/paste code is bad.
                 tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, '', outcome, failType)
                 # print("Key: " + tmpFileObj.getKey())
@@ -96,14 +90,7 @@ def outputParser(outputFilename):
         if line.startswith("#") == 0:
             if line.startswith("Testing"):
 
-                sanityCheckNumbersAddUp(numTestcases,
-                                        numPasses,
-                                        numFails,
-                                        numBidFails,
-                                        numLeadFails,
-                                        numSecondFails,
-                                        numThirdFails,
-                                        numFourthFails)
+                counter.sanityCheckNumbersAddUp()
 
                 if currentTestFileName != '':
                     tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, '', outcome, failType)
@@ -124,7 +111,8 @@ def outputParser(outputFilename):
                 # End reinit vars
 
                 currentTestFileName = line.split(" ")[-1]
-                numTestcases = numTestcases + 1
+
+                counter.incrementNumTestcases()
 
             elif line.startswith("Your name: "):
                 playerName = line.split(" ")[2].strip()
@@ -133,32 +121,32 @@ def outputParser(outputFilename):
                 cardsInHand = line.strip()
 
             elif line.find("(PASS)") != -1:
-                numPasses = numPasses + 1
+                counter.incrementNumPasses()
                 outcome = 1
                 # TODO: Maybe alt pass should have outcome = 2?
 
             elif line.find("(FAIL)") != -1:
-                numFails = numFails + 1
+                counter.incrementNumFails()
                 outcome = 0
 
             elif line.find("(BID FAIL)") != -1:
-                numBidFails = numBidFails + 1
+                counter.incrementNumBidFails()
                 failType = 'bid'
 
             elif line.find("(LEAD FAIL)") != -1:
-                numLeadFails = numLeadFails + 1
+                counter.incrementNumLeadFails()
                 failType = 'lead'
 
             elif line.find("(SECOND FAIL)") != -1:
-                numSecondFails = numSecondFails + 1
+                counter.incrementNumSecondFails()
                 failType = 'second'
 
             elif line.find("(THIRD FAIL)") != -1:
-                numThirdFails = numThirdFails + 1
+                counter.incrementNumThirdFails()
                 failType = 'third'
 
             elif line.find("(FOURTH FAIL)") != -1:
-                numFourthFails = numFourthFails + 1
+                counter.incrementNumFourthFails()
                 failType = 'fourth'
 
             # TODO: search for other labels...
@@ -168,28 +156,12 @@ def outputParser(outputFilename):
     file1.close()
 
     print("Line count: " + str(count))
-    print("numTestcases: " + str(numTestcases))
-    print("numPasses: " + str(numPasses))
-    print("numFails: " + str(numFails))
-    print("numBidFails: " + str(numBidFails))
-    print("numLeadFails: " + str(numLeadFails))
-    print("numSecondFails: " + str(numSecondFails))
-    print("numThirdFails: " + str(numThirdFails))
-    print("numFourthFails: " + str(numFourthFails))
+    counter.printCounterSums()
 
     return fileDict
 
 
-def sanityCheckNumbersAddUp(numTestcases, numPasses, numFails, numBidFails, numLeadFails, numSecondFails, numThirdFails,
-                            numFourthFails):
-    if numTestcases != numPasses + numFails:
-        print("WARNING: test cases don't add up 1")
-
-    if numFails != numBidFails + numLeadFails + numSecondFails + numThirdFails + numFourthFails:
-        print("WARNING: test cases don't add up 2")
-
-
-def goThruGitDiff(gitDiffFilepath):
+def goThroughGitDiff(gitDiffFilepath):
     print()
     print("Going through TestCaseAndReplayData git diff to find new test cases:")
 

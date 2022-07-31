@@ -3,8 +3,6 @@ from TestOutputParser import outputParser
 import os
 import shutil
 
-# TODO: maybe the path before the folder name could be a config.
-
 
 def main():
     # TODO: make this input:
