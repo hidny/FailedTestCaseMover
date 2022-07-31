@@ -1,3 +1,6 @@
+import Constants
+
+
 class TestCaseOutcomeCounters:
     numTestcases = 0
 
@@ -9,6 +12,8 @@ class TestCaseOutcomeCounters:
     numSecondFails = 0
     numThirdFails = 0
     numFourthFails = 0
+
+    numDebugFails = 0
 
     def incrementNumTestcases(self):
         self.numTestcases = self.numTestcases + 1
@@ -34,11 +39,14 @@ class TestCaseOutcomeCounters:
     def incrementNumFourthFails(self):
         self.numFourthFails = self.numFourthFails + 1
 
+    def incrementNumDebugFails(self):
+        self.numDebugFails = self.numDebugFails + 1
+
     def sanityCheckNumbersAddUp(self):
         if self.numTestcases != self.numPasses + self.numFails:
             print("WARNING: test cases don't add up 1")
 
-        if self.numFails != self.numBidFails + self.numLeadFails + self.numSecondFails + self.numThirdFails + self.numFourthFails:
+        if self.numFails != self.numBidFails + self.numLeadFails + self.numSecondFails + self.numThirdFails + self.numFourthFails + self.numDebugFails:
             print("WARNING: test cases don't add up 2")
 
     def incrementCounterBasedOnTestcaseObj(self, testCaseFileObj):
@@ -50,7 +58,10 @@ class TestCaseOutcomeCounters:
         else:
             self.incrementNumFails()
 
-            if testCaseFileObj.failType == 'bid':
+            if testCaseFileObj.getOrigFolderOfTestcase() == Constants.DEBUG_FOLDER_NAME:
+                self.incrementNumDebugFails()
+
+            elif testCaseFileObj.failType == 'bid':
                 self.incrementNumBidFails()
 
             elif testCaseFileObj.failType == 'lead':
@@ -67,7 +78,8 @@ class TestCaseOutcomeCounters:
 
     def printSummaryPercentages(self, counterType):
 
-        print(counterType + ":  " + str(self.numPasses) + " / " + str(self.numTestcases) + " ( " + str(round((100 * self.numPasses)/self.numTestcases, 2)) + "% ) (" + str(self.numFails) + " fails)")
+        print(counterType + ":  " + str(self.numPasses) + " / " + str(self.numTestcases) + " ( " + str(
+            round((100 * self.numPasses) / self.numTestcases, 2)) + "% ) (" + str(self.numFails) + " fails)")
         print()
 
     def printCounterSums(self):
@@ -79,5 +91,19 @@ class TestCaseOutcomeCounters:
         print("numSecondFails: " + str(self.numSecondFails))
         print("numThirdFails: " + str(self.numThirdFails))
         print("numFourthFails: " + str(self.numFourthFails))
+        print("numDebugFails: " + str(self.numDebugFails))
+        print()
+        print()
+
+    def printNotebookSums(self):
+        print("numBidFails: " + str(self.numBidFails))
+        print("numLeadFails: " + str(self.numLeadFails))
+        print("numSecondFails: " + str(self.numSecondFails))
+        print("numThirdFails: " + str(self.numThirdFails))
+        print("numFourthFails: " + str(self.numFourthFails))
+        print("numDebugFails: " + str(self.numDebugFails))
+        print()
+        print("Sum: " + str(self.numFails))
+        print()
         print()
         print()

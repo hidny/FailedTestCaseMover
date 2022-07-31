@@ -27,7 +27,8 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     runTestCaseDict = outputParser(outputPath)
 
     print()
-    print("Copying failed and important test cases to test folders:")
+    print(
+        "Copying important new test cases to test folders (this includes newly failed tests, all bid test cases, and maybe some bonus tests):")
 
     # TODO: put folders in a list and refactor
     folderForBids = os.path.join(Constants.baseTestFolderPath, "newBidTestcases")
@@ -96,8 +97,8 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
 
     # End of dictionary loop
 
-    print("Done moving important new test cases, so monte could analyze them. "
-          + str(countTestcasesMoved) + " test cases were moved.")
+    print("Done moving important new test cases, so monte could analyze them. ")
+    print(str(countTestcasesMoved) + " test cases were moved.")
 
     # Do failure count:
     counterBefore = TestCaseOutcomeCounters()
@@ -127,8 +128,13 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     print("Sums to use:")
     counterDuring.printCounterSums()
 
-    # TODO: Do your best to match the notebook summary.
-    # Example: the sums at the bottom are just for fails during the match
+    print("Notebook sums:")
+    counterBefore.printNotebookSums()
+    counterAfter.printNotebookSums()
+
+    # This matches the notebook summary I've been using:
+    print("Sums to use:")
+    counterDuring.printNotebookSums()
 
 
 if __name__ == '__main__':
