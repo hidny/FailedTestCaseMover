@@ -65,6 +65,7 @@ def outputParser(outputFilename):
     currentTestFileName = ''
     playerName = ''
     cardsInHand = ''
+    prevCardsDealtLine = 0
     isBid = 1
     hasTODOLabel = 0
     # folder = ''
@@ -89,9 +90,8 @@ def outputParser(outputFilename):
                 counter.sanityCheckNumbersAddUp()
 
                 # TODO: copy/paste code is bad.
-                tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel, '',
-                                             hasTODOLabel, outcome,
-                                             failType)
+                tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel,
+                                             '', outcome, failType)
                 # print("Key: " + tmpFileObj.getKey())
 
                 if tmpFileObj.getKey() in fileDict:
@@ -112,9 +112,8 @@ def outputParser(outputFilename):
                 counter.sanityCheckNumbersAddUp()
 
                 if currentTestFileName != '':
-                    tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel, '',
-                                                 hasTODOLabel,
-                                                 outcome, failType)
+                    tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel,
+                                                 '', outcome, failType)
                     # print("Key: " + tmpFileObj.getKey())
 
                     if tmpFileObj.getKey() in fileDict:
@@ -172,16 +171,19 @@ def outputParser(outputFilename):
                 counter.incrementNumFourthFails()
                 failType = 'fourth'
 
-            elif line.startswith("Bid history:"):
-                prevBidHistoryLine = count
+            elif line.startswith("Cards dealt:"):
+                prevCardsDealtLine = count
 
-            elif line.find(" bid ") != -1 and count - prevBidHistoryLine == Constants.NUM_PLAYERS:
+            elif not line.startswith("AI handle") \
+                    and line.find(" bid ") != -1 \
+                    and count - prevCardsDealtLine == 3 + Constants.NUM_PLAYERS:
                 isBid = 0
+                print(str(count - prevCardsDealtLine))
 
             elif line.lower().find("todo") != -1:
                 hasTODOLabel = 1
 
-            # TODO: search for other labels...
+        # TODO: search for other labels...
 
         # print("Line{}: {}".format(count, line.strip()))
 
@@ -206,6 +208,7 @@ def goThroughGitDiff(gitDiffFilepath):
     currentTestFileName = ''
     nameOfPlayer = ''
     cards = ''
+    prevBidHistoryLine = 0
     isBid = 1
     hasTODOLabel = 0
     folder = ''

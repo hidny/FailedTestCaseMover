@@ -27,11 +27,13 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     print(
         "Copying important new test cases to test folders (this includes newly failed tests, all bid test cases, and maybe some bonus tests):")
 
-    # TODO: put folders in a list and refactor
+    # TODO: make a function and clean this up
     folderForBids = os.path.join(Constants.baseTestFolderPath, "newBidTestcases")
 
     folderForLeadFails = os.path.join(Constants.baseTestFolderPath, "newLeadFails")
     folderForFollowFails = os.path.join(Constants.baseTestFolderPath, "newFollowFails")
+
+    folderForBonusCheck = os.path.join(Constants.baseTestFolderPath, "newBonusChecks")
 
     if not os.path.exists(folderForBids):
         os.makedirs(folderForBids)
@@ -41,11 +43,10 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
 
     if not os.path.exists(folderForFollowFails):
         os.makedirs(folderForFollowFails)
-    # END TODO
 
-    # TODO: be able to identify when test case is labelled with "(TODO: please test)"
-    # TODO: put label in constants file
-    folderForBonusCheck = os.path.join(Constants.baseTestFolderPath, "bonusChecks")
+    if not os.path.exists(folderForBonusCheck):
+        os.makedirs(folderForBonusCheck)
+    # END TODO
 
     countTestcasesMoved = 0
 
@@ -61,29 +62,27 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
                                     gitDiffDict[key].filename)
 
             testcaseMoved = 1
+            if testcase.isBid == 1:
+                shutil.copyfile(fromPath, os.path.join(folderForBids, gitDiffDict[key].filename))
 
-            if testcase.outcome == 0:
+            elif testcase.outcome == 0:
 
                 if testcase.failType == 'lead':
                     shutil.copyfile(fromPath, os.path.join(folderForLeadFails, gitDiffDict[key].filename))
                 elif testcase.failType == 'bid':
-                    # TODO: delete this once you move all new bids to this folder
-                    # Replace with pass
-                    shutil.copyfile(fromPath, os.path.join(folderForBids, gitDiffDict[key].filename))
+                    # This case shouldn't happen...
+                    pass
                 else:
                     shutil.copyfile(fromPath, os.path.join(folderForFollowFails, gitDiffDict[key].filename))
 
             elif testcase.folder == "MichaelDebugMadeUp":
                 shutil.copyfile(fromPath, os.path.join(folderForBonusCheck, gitDiffDict[key].filename))
 
+            elif testcase.hasTODOLabel:
+                shutil.copyfile(fromPath, os.path.join(folderForBonusCheck, gitDiffDict[key].filename))
+
             else:
                 testcaseMoved = 0
-
-            # TODO: check for (TODO: please test) label
-
-            # TODO: be able to identify bids even though it's not a fail
-            # TODO: count lead, second, third, fourth, and bid fails
-            # TODO: do all the stats!
 
             countTestcasesMoved += testcaseMoved
 
@@ -109,7 +108,6 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     counterDuring = TestCaseOutcomeCounters()
 
     for key in runTestCaseDict:
-        # TODO: seperate out failed debug cases...
         counterAfter.incrementCounterBasedOnTestcaseObj(runTestCaseDict[key])
 
         if key in gitDiffDict.keys():
