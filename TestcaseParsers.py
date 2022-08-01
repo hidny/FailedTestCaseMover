@@ -1,19 +1,27 @@
 from os.path import join
 
+import Constants
 from TestCaseFileObj import TestCaseFileObj
 from TestCaseOutcomeCounters import TestCaseOutcomeCounters
 
+# TODO: at least try to eliminate copy/paste code:
 
 def makeFileObjectFromFile(folderPath, filename):
     nameOfPlayer = ''
     cards = ''
+    prevBidHistoryLine = 0
+    isBid = 1
+    hasTODOLabel = 0
 
     file1 = open(join(folderPath, filename), 'r')
 
     previousLine = ''
 
+    count = 0
+
     while True:
 
+        count = count + 1
         # Get next line from file
         line = file1.readline()
 
@@ -21,6 +29,12 @@ def makeFileObjectFromFile(folderPath, filename):
             nameOfPlayer = line.split(" ")[2].strip()
         elif previousLine.startswith("Cards in hand:"):
             cards = line.strip()
+        elif line.startswith("Bid history:"):
+            prevBidHistoryLine = count
+        elif line.find(" bid ") != -1 and count - prevBidHistoryLine == Constants.NUM_PLAYERS:
+            isBid = 0
+        elif line.lower().find("todo") != -1:
+            hasTODOLabel = 1
 
         previousLine = line
         # if line is empty
@@ -32,7 +46,7 @@ def makeFileObjectFromFile(folderPath, filename):
 
     folder = folderPath.split("/")[-1]
 
-    return TestCaseFileObj(filename, nameOfPlayer, cards, folder)
+    return TestCaseFileObj(filename, nameOfPlayer, cards, isBid, hasTODOLabel, folder)
 
 
 def outputParser(outputFilename):
@@ -50,6 +64,8 @@ def outputParser(outputFilename):
     currentTestFileName = ''
     playerName = ''
     cardsInHand = ''
+    isBid = 1
+    hasTODOLabel = 0
     # folder = ''
     outcome = 0
     failType = ''
@@ -72,7 +88,9 @@ def outputParser(outputFilename):
                 counter.sanityCheckNumbersAddUp()
 
                 # TODO: copy/paste code is bad.
-                tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, '', outcome, failType)
+                tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel, '',
+                                             hasTODOLabel, outcome,
+                                             failType)
                 # print("Key: " + tmpFileObj.getKey())
 
                 if tmpFileObj.getKey() in fileDict:
@@ -93,7 +111,9 @@ def outputParser(outputFilename):
                 counter.sanityCheckNumbersAddUp()
 
                 if currentTestFileName != '':
-                    tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, '', outcome, failType)
+                    tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel, '',
+                                                 hasTODOLabel,
+                                                 outcome, failType)
                     # print("Key: " + tmpFileObj.getKey())
 
                     if tmpFileObj.getKey() in fileDict:
@@ -105,6 +125,8 @@ def outputParser(outputFilename):
                 # reinit vars just in case;
                 playerName = ''
                 cardsInHand = ''
+                isBid = 1
+                hasTODOLabel = 0
                 # folder = ''
                 outcome = 0
                 failType = ''
@@ -149,6 +171,15 @@ def outputParser(outputFilename):
                 counter.incrementNumFourthFails()
                 failType = 'fourth'
 
+            elif line.startswith("Bid history:"):
+                prevBidHistoryLine = count
+
+            elif line.find(" bid ") != -1 and count - prevBidHistoryLine == Constants.NUM_PLAYERS:
+                isBid = 0
+
+            elif line.lower().find("todo") != -1:
+                hasTODOLabel = 1
+
             # TODO: search for other labels...
 
         # print("Line{}: {}".format(count, line.strip()))
@@ -168,11 +199,14 @@ def goThroughGitDiff(gitDiffFilepath):
     file = open(join(gitDiffFilepath), 'r')
     testFileDict = {}
 
+    prevBidHistoryLine = -1000
     previousLine = ''
 
     currentTestFileName = ''
     nameOfPlayer = ''
     cards = ''
+    isBid = 1
+    hasTODOLabel = 0
     folder = ''
 
     count = 0
@@ -200,7 +234,7 @@ def goThroughGitDiff(gitDiffFilepath):
         if line.startswith("++") and line.endswith(".txt"):
 
             if currentTestFileName != '':
-                tmpFileObj = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, folder)
+                tmpFileObj = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, isBid, hasTODOLabel, folder)
 
                 if tmpFileObj.getKey() in testFileDict:
                     print("Warning: duplicate test case: " + tmpFileObj.getKey())
@@ -211,6 +245,8 @@ def goThroughGitDiff(gitDiffFilepath):
                 # reinit vars just in case;
                 nameOfPlayer = ''
                 cards = ''
+                isBid = 1
+                hasTODOLabel = 0
                 # End reinit vars
 
             folder = line.split("/")[-2]
@@ -222,11 +258,20 @@ def goThroughGitDiff(gitDiffFilepath):
         elif previousLine.startswith("Cards in hand:"):
             cards = line.strip()
 
+        elif line.startswith("Bid history:"):
+            prevBidHistoryLine = count
+
+        elif line.find(" bid ") != -1 and count - prevBidHistoryLine == Constants.NUM_PLAYERS:
+            isBid = 0
+
+        elif line.lower().find("todo") != -1:
+            hasTODOLabel = 1
+
         previousLine = line
 
     file.close()
 
-    lastTestcase = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, folder)
+    lastTestcase = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, isBid, hasTODOLabel, folder)
 
     if lastTestcase.getKey() in testFileDict:
         print("Warning: duplicate test case 2: " + lastTestcase.getKey())

@@ -16,3 +16,4 @@ DEBUG_FOLDER_NAME = "MichaelDebugMadeUp"
 
 
 MAX_CARDS_IN_A_HAND = 13
+NUM_PLAYERS = 4
