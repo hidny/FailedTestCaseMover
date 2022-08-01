@@ -202,7 +202,7 @@ def outputParser(outputFilename, customLabel=''):
     return fileDict
 
 
-def goThroughGitDiff(gitDiffFilepath, customLabel):
+def goThroughGitDiff(gitDiffFilepath, customLabel=''):
     print()
     print("Going through TestCaseAndReplayData git diff to find new test cases:")
 
