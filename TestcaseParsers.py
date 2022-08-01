@@ -4,6 +4,7 @@ import Constants
 from TestCaseFileObj import TestCaseFileObj
 from TestCaseOutcomeCounters import TestCaseOutcomeCounters
 
+
 # TODO: at least try to eliminate copy/paste code:
 
 def makeFileObjectFromFile(folderPath, filename):

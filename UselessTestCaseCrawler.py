@@ -1,7 +1,5 @@
 from os import listdir
 from os.path import isfile, join
-
-# TODO: put in config:
 import Constants
 
 # This is actually really slow...
