@@ -83,7 +83,7 @@ def main():
     for i in range(2, Constants.MAX_CARDS_IN_A_HAND + 1):
         listCardNumAvailable.append(i)
 
-    parser.add_argument("-n", "--num", help="Get the nth last test case", type=int)
+    parser.add_argument("-n", "--num", default=1, help="Get the nth last test case", type=int)
 
     group = parser.add_mutually_exclusive_group()
 

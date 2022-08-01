@@ -17,7 +17,7 @@ def main():
     for i in range(2, Constants.MAX_CARDS_IN_A_HAND + 1):
         listCardNumAvailable.append(i)
 
-    parser.add_argument("-n", "--num", help="Label the nth last test case", type=int)
+    parser.add_argument("-n", "--num", default=1, help="Label the nth last test case", type=int)
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-c", "--card", help="Filter for non-bid test cases with a specific number of cards", type=int,
