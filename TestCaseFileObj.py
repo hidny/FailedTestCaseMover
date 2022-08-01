@@ -7,12 +7,13 @@ import Constants
 
 class TestCaseFileObj:
 
-    def __init__(self, filename, playerName, cardsInHand, isBid, hasTODOLabel, folder='', outcome='', failType=''):
+    def __init__(self, filename, playerName, cardsInHand, isBid, hasTODOLabel, hasCustomLabel, folder='', outcome='', failType=''):
         self.filename = filename
         self.playerName = playerName
         self.cardsInHand = cardsInHand
         self.isBid = isBid
         self.hasTODOLabel = hasTODOLabel
+        self.hasCustomLabel = hasCustomLabel
         self.folder = folder
         self.outcome = outcome
         self.failType = failType

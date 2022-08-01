@@ -2,7 +2,12 @@ import os
 
 import shutil
 import Constants
+# Tried: pip install gitpython
+import subprocess
+import argparse
 
+# Trying
+# https://www.digitalocean.com/community/tutorials/how-to-use-subprocess-to-run-external-programs-in-python-3
 # TODO:
 # git diff 4e0a826761cb7d2bbaa8c50dae797383b886f0ec 3c332fcc7e33ad23db814a27d1074ab5d1700345 > C:\Users\Michael\Desktop\gitDiff.txt
 
@@ -78,7 +83,7 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
             elif testcase.folder == "MichaelDebugMadeUp":
                 shutil.copyfile(fromPath, os.path.join(folderForBonusCheck, gitDiffDict[key].filename))
 
-            elif testcase.hasTODOLabel:
+            elif testcase.hasTODOLabel == 1:
                 shutil.copyfile(fromPath, os.path.join(folderForBonusCheck, gitDiffDict[key].filename))
 
             else:
@@ -108,6 +113,7 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     counterDuring = TestCaseOutcomeCounters()
 
     for key in runTestCaseDict:
+
         counterAfter.incrementCounterBasedOnTestcaseObj(runTestCaseDict[key])
 
         if key in gitDiffDict.keys():
@@ -121,11 +127,11 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
 
     counterDuring.printSummaryPercentages("During")
 
-    print("Debug:")
-    counterBefore.printCounterSums()
-    counterAfter.printCounterSums()
-    print("Sums to use:")
-    counterDuring.printCounterSums()
+    # print("Debug:")
+    # counterBefore.printCounterSums()
+    # counterAfter.printCounterSums()
+    # print("Sums to use:")
+    # counterDuring.printCounterSums()
 
     print("Notebook sums:")
     counterBefore.printNotebookSums()
@@ -137,5 +143,47 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
 
 
 if __name__ == '__main__':
-    doAfterGameAnalysis("/Users/Michael/Desktop/gitDiff.txt", "/Users/Michael/Desktop/july24th-1.txt")
+
+    parser = argparse.ArgumentParser(description='Do the after-game organizations rituals automatically')
+
+    parser.add_argument("filename", help="File name if on desktop, or full path")
+
+    parser.add_argument("-c", "--commit",
+                        help="Commit id that we want to compare current testcases to. Defaults to last commit")
+
+    args = parser.parse_args()
+
+    if args.filename.find("/") != -1:
+        fullPathRun = args.filename
+    else:
+        fullPathRun = os.path.join(Constants.DESKTOP_LOCATION, args.filename)
+
+    commitId = ''
+    if args.commit:
+        commitId = args.commit
+
+    if commitId == '':
+        pr = subprocess.Popen("git diff", cwd=Constants.gitRepoFolderPath, shell=True, stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE)
+    else:
+        pr = subprocess.Popen("git diff " + commitId, cwd=Constants.gitRepoFolderPath, shell=True,
+                              stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE)
+
+    (out, error) = pr.communicate()
+    print("Error : " + str(error))
+
+    out2 = str(out).replace("\\n", "\n")
+    # print("out : " + out2)
+
+    with open('tmpDiff.txt', 'w') as f:
+        f.write(out2)
+
+    # For testing:
+    # doAfterGameAnalysis("/Users/Michael/Desktop/gitDiff.txt", "/Users/Michael/Desktop/july24th-1.txt")
     # goThruGitDiff("/Users/Michael/Desktop/gitDiff.txt")
+
+    # python AfterGameScript.py july24th-1.txt -c 844ea0c57c112bc827a780a8a108b9868589c7aa
+    # python AfterGameScript.py july24th-1.txt -c 4e0a826761cb7d2bbaa8c50dae797383b886f0ec
+
+    doAfterGameAnalysis("tmpDiff.txt", fullPathRun)

@@ -3,6 +3,8 @@ LIST_OF_FOLDERS = \
 
 baseTestFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData/testcases"
 
+gitRepoFolderPath = "/Users/Michael/GitHub/TestCaseAndReplayData"
+
 notepadPPLocation = r"c:/Program Files (x86)/Notepad++/notepad++.exe"
 
 curTestFolderBeingAddedTo = "Michael2022-3"
