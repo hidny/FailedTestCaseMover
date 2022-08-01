@@ -18,9 +18,12 @@ def main():
         listCardNumAvailable.append(i)
 
     parser.add_argument("-n", "--num", help="Label the nth last test case", type=int)
-    parser.add_argument("-c", "--card", help="Filter for non-bid test cases with a specific number of cards", type=int,
-                        choices=listCardNumAvailable)
-    parser.add_argument("-b", "--bid", help="Filter for bid test cases", action="store_true")
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-c", "--card", help="Filter for non-bid test cases with a specific number of cards", type=int,
+                       choices=listCardNumAvailable)
+    group.add_argument("-b", "--bid", help="Filter for bid test cases", action="store_true")
+
     parser.add_argument("-l", "--label", help="Label to add. Put it in quotes and begin with a \"#\"."
                                               "\nExample: \"" + Constants.DEFAULT_LABEL + "\"")
 
