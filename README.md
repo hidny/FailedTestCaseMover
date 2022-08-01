@@ -3,9 +3,7 @@ Python scripts that move card game test cases in the TestCaseAndReplayData repo 
 
 This project is still being worked on, but it will probably not take long to complete.
 
-#TODO: be able to process input from git diff Testcase...
 #TODO: be able to make a git diff call and make a file out of it
 
-#TODO: make constants file
 #TODO: org all util function in single file?
 #TODO: make CLI interface as simple as possible
