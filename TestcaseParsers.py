@@ -64,9 +64,6 @@ def outputParser(outputFilename, customLabel=''):
 
     file1 = open(outputFilename, 'r')
 
-    # TODO: parse output file (The things that has all the test results)
-    # And save it to dictionary...
-
     currentTestFileName = ''
     playerName = ''
     cardsInHand = ''
@@ -96,7 +93,8 @@ def outputParser(outputFilename, customLabel=''):
                 counter.sanityCheckNumbersAddUp()
 
                 # TODO: copy/paste code is bad.
-                tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel, hasCustomLabel,
+                tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel,
+                                             hasCustomLabel,
                                              '', outcome, failType)
                 # print("Key: " + tmpFileObj.getKey())
 
@@ -119,7 +117,8 @@ def outputParser(outputFilename, customLabel=''):
                 counter.sanityCheckNumbersAddUp()
 
                 if currentTestFileName != '':
-                    tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel, hasCustomLabel,
+                    tmpFileObj = TestCaseFileObj(currentTestFileName, playerName, cardsInHand, isBid, hasTODOLabel,
+                                                 hasCustomLabel,
                                                  '', outcome, failType)
                     # print("Key: " + tmpFileObj.getKey())
 
@@ -187,9 +186,7 @@ def outputParser(outputFilename, customLabel=''):
                     and count - prevCardsDealtLine == 3 + Constants.NUM_PLAYERS:
                 isBid = 0
 
-
-
-        #General checks:
+        # General checks:
         if line.lower().find("todo") != -1:
             hasTODOLabel = 1
         if customLabel != '' and line.lower().find(customLabel) != -1:
@@ -212,13 +209,12 @@ def goThroughGitDiff(gitDiffFilepath, customLabel):
     file = open(join(gitDiffFilepath), 'r')
     testFileDict = {}
 
-    prevBidHistoryLine = -1000
     previousLine = ''
 
     currentTestFileName = ''
     nameOfPlayer = ''
     cards = ''
-    prevBidHistoryLine = 0
+    prevBidHistoryLine = -1000
     isBid = 1
     hasTODOLabel = 0
     hasCustomLabel = 0
@@ -249,7 +245,8 @@ def goThroughGitDiff(gitDiffFilepath, customLabel):
         if line.startswith("++") and line.endswith(".txt"):
 
             if currentTestFileName != '':
-                tmpFileObj = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, isBid, hasTODOLabel, hasCustomLabel, folder)
+                tmpFileObj = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, isBid, hasTODOLabel,
+                                             hasCustomLabel, folder)
 
                 if tmpFileObj.getKey() in testFileDict:
                     print("Warning: duplicate test case: " + tmpFileObj.getKey())
@@ -290,7 +287,8 @@ def goThroughGitDiff(gitDiffFilepath, customLabel):
 
     file.close()
 
-    lastTestcase = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, isBid, hasTODOLabel, hasCustomLabel, folder)
+    lastTestcase = TestCaseFileObj(currentTestFileName, nameOfPlayer, cards, isBid, hasTODOLabel, hasCustomLabel,
+                                   folder)
 
     if lastTestcase.getKey() in testFileDict:
         print("Warning: duplicate test case 2: " + lastTestcase.getKey())

@@ -29,8 +29,8 @@ def doAfterGameAnalysis(gitDiffFilePath, outputPath):
     runTestCaseDict = outputParser(outputPath)
 
     print()
-    print(
-        "Copying important new test cases to test folders (this includes newly failed tests, all bid test cases, and maybe some bonus tests):")
+    print("Copying important new test cases to test folders\n"
+          "(this includes newly failed tests, all bid test cases, and maybe some bonus tests):")
 
     # TODO: make a function and clean this up
     folderForBids = os.path.join(Constants.baseTestFolderPath, "newBidTestcases")
