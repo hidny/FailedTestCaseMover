@@ -1,34 +1,38 @@
-import os
+import argparse
 
 import Constants
-from UselessTestCaseCrawler import makeFileObjectFromFile
+from GetPrevTestcase import findRelevantFileBasedOnArgs
 
 
-# TODO: number param for how far back
-
-def appendLabelToFile(filname):
+def appendLabelToFile(filname, labelToUse):
     with open(filname, 'a') as fd:
-        fd.write(f'\n# (TODO: please test)')
+        fd.write(f'\n' + labelToUse)
 
 
-# TODO: --card for num cards last test case has to have.
+def main():
+    parser = argparse.ArgumentParser(description="Append label to previous testcase."
+                                                 " Default label is \"" + Constants.DEFAULT_LABEL + "\"")
+
+    listCardNumAvailable = []
+    for i in range(2, Constants.MAX_CARDS_IN_A_HAND + 1):
+        listCardNumAvailable.append(i)
+
+    parser.add_argument("-n", "--num", help="Label the nth last test case", type=int)
+    parser.add_argument("-c", "--card", help="Filter for non-bid test cases with a specific number of cards", type=int,
+                        choices=listCardNumAvailable)
+    parser.add_argument("-b", "--bid", help="Filter for bid test cases", action="store_true")
+    parser.add_argument("-l", "--label", help="Label to add. Put it in quotes and begin with a \"#\"."
+                                              "\nExample: \"" + Constants.DEFAULT_LABEL + "\"")
+
+    args = parser.parse_args()
+    labelToUse = Constants.DEFAULT_LABEL
+
+    if args.label:
+        labelToUse = args.label
+
+    fileToLabel = findRelevantFileBasedOnArgs(args)
+    appendLabelToFile(fileToLabel, labelToUse)
 
 
-curTestFolder = os.path.join(Constants.baseTestFolderPath, Constants.curTestFolderBeingAddedTo)
-
-files = [f for f in os.listdir(curTestFolder) if os.path.isfile(os.path.join(curTestFolder, f))]
-
-files.sort()
-
-print(files[-1])
-
-appendLabelToFile(os.path.join(curTestFolder, files[-1]))
-
-# TODO: --card for num cards.
-# Example of this working for num 5
-# TODO: num cards between 2 and 13
-
-for file in reversed(files):
-    if len(makeFileObjectFromFile(curTestFolder, file).cardsInHand.strip().split(" ")) == 7:
-        appendLabelToFile(os.path.join(curTestFolder, file))
-        break
+if __name__ == '__main__':
+    main()

@@ -9,9 +9,6 @@ import Constants
 #
 # C:\Users\Michael\Desktop\gitDiff.txt
 
-# TODO: maybe the path before the folder name could be a config.
-
-
 # TODO: Give the option of actually running the git diff command.
 from TestCaseOutcomeCounters import TestCaseOutcomeCounters
 from TestcaseParsers import goThroughGitDiff, outputParser
