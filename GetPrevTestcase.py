@@ -41,8 +41,15 @@ files = [f for f in os.listdir(curTestFolder) if os.path.isfile(os.path.join(cur
 
 files.sort()
 
+openedFile = 0
+
 if prevTestType == 0:
+
+    if numPrev >= len(files):
+        print("ERROR: the number of previous files input is too big for the current folder (" + Constants.curTestFolderBeingAddedTo + ")")
+        exit(1)
     print("File to open: " + files[-numPrev])
+    openedFile = 1
 
     subprocess.call([Constants.notepadPPLocation, os.path.join(curTestFolder, files[-numPrev])])
 
@@ -57,6 +64,7 @@ elif prevTestType == 1:
 
             if numFound == numPrev:
                 print("File to open: " + file)
+                openedFile = 1
                 subprocess.call([Constants.notepadPPLocation, os.path.join(curTestFolder, file)])
                 break
 
@@ -70,5 +78,10 @@ elif prevTestType == 2:
 
             if numFound == numPrev:
                 print("File to open: " + file)
+                openedFile = 1
                 subprocess.call([Constants.notepadPPLocation, os.path.join(curTestFolder, file)])
                 break
+
+if openedFile == 0:
+    print("ERROR: the number of previous files input is too big for the current folder (" + Constants.curTestFolderBeingAddedTo + ")")
+    print("Hint: Maybe try removing the filter you used.")
