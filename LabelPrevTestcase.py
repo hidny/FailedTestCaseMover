@@ -24,14 +24,11 @@ def main():
                        choices=listCardNumAvailable)
     group.add_argument("-b", "--bid", help="Filter for bid test cases", action="store_true")
 
-    parser.add_argument("-l", "--label", help="Label to add. Put it in quotes and begin with a \"#\"."
+    parser.add_argument("-l", "--label", default=Constants.DEFAULT_LABEL, help="Label to add. Put it in quotes and begin with a \"#\"."
                                               "\nExample: \"" + Constants.DEFAULT_LABEL + "\"")
 
     args = parser.parse_args()
-    labelToUse = Constants.DEFAULT_LABEL
-
-    if args.label:
-        labelToUse = args.label
+    labelToUse = args.label
 
     fileToLabel = findRelevantFileBasedOnArgs(args)
     appendLabelToFile(fileToLabel, labelToUse)
