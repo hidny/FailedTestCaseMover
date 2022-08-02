@@ -39,7 +39,7 @@ def makeFileObjectFromFile(folderPath, filename, customLabel=''):
         if line.lower().find("todo") != -1:
             hasTODOLabel = 1
 
-        if customLabel != '' and line.lower().find(customLabel) != -1:
+        if customLabel != '' and line.lower().find(customLabel.lower()) != -1:
             hasCustomLabel = 1
 
         previousLine = line
@@ -189,7 +189,7 @@ def outputParser(outputFilename, customLabel=''):
         # General checks:
         if line.lower().find("todo") != -1:
             hasTODOLabel = 1
-        if customLabel != '' and line.lower().find(customLabel) != -1:
+        if customLabel != '' and line.lower().find(customLabel.lower()) != -1:
             hasCustomLabel = 1
 
         # print("Line{}: {}".format(count, line.strip()))
@@ -280,7 +280,7 @@ def goThroughGitDiff(gitDiffFilepath, customLabel=''):
         if line.lower().find("todo") != -1:
             hasTODOLabel = 1
 
-        if customLabel != '' and line.lower().find(customLabel) != -1:
+        if customLabel != '' and line.lower().find(customLabel.lower()) != -1:
             hasCustomLabel = 1
 
         previousLine = line

@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.filename.find("/") != -1:
+    if args.filename.find("/") != -1 or args.filename.find("\\") != -1:
         fullPathRun = args.filename
     else:
         fullPathRun = os.path.join(Constants.DESKTOP_LOCATION, args.filename)
