@@ -1,7 +1,6 @@
 
 
-# TODO: Add random label as possible input
-# TODO: Add option to add details about when testcase is bid, lead, 2nd, 3rd, 4th
+# TODO (optional): Add option to add details about when testcase is bid, lead, 2nd, 3rd, 4th even when it's not a fail
 import Constants
 
 

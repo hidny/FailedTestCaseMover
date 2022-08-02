@@ -22,7 +22,6 @@ def main():
         print("Just put in the folder name without using the full path, or any path separators.")
         exit(1)
 
-    # TODO: make this input:
     folderPath = os.path.join(Constants.baseTestFolderPath, args.folderName)
 
     if not os.path.exists(folderPath):

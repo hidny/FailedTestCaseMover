@@ -2,19 +2,10 @@ import os
 
 import shutil
 import Constants
-# Tried: pip install gitpython
 import subprocess
 import argparse
 
-# Trying
-# https://www.digitalocean.com/community/tutorials/how-to-use-subprocess-to-run-external-programs-in-python-3
-# TODO:
-# git diff 4e0a826761cb7d2bbaa8c50dae797383b886f0ec 3c332fcc7e33ad23db814a27d1074ab5d1700345 > C:\Users\Michael\Desktop\gitDiff.txt
 
-#
-# C:\Users\Michael\Desktop\gitDiff.txt
-
-# TODO: Give the option of actually running the git diff command.
 from TestCaseOutcomeCounters import TestCaseOutcomeCounters
 from TestcaseParsers import goThroughGitDiff, outputParser
 
