@@ -1,6 +1,7 @@
 import argparse
 
 import Constants
+from MLabelledTestcasesToFolder import getFileNameToUseToAvoidCollision
 from TestOutputParser import outputParser
 import os
 import shutil
@@ -63,10 +64,11 @@ def main():
         print("Guess at folder:")
         print(diffDict[key].getOrigFolderOfTestcase())
 
-        # TODO: handle filename collisions!
+        destFileNameToUse = getFileNameToUseToAvoidCollision(targetFolder, diffDict[key].filename)
+
         shutil.copyfile(
             os.path.join(Constants.baseTestFolderPath, diffDict[key].getOrigFolderOfTestcase(), diffDict[key].filename),
-            os.path.join(targetFolder, diffDict[key].filename))
+            os.path.join(targetFolder, destFileNameToUse))
 
 
 if __name__ == '__main__':

@@ -5,9 +5,52 @@ from TestOutputParser import outputParser
 import os
 import shutil
 
+import re
+
+
+def changeFilenameToUndoCollisionIncrement(origFileName):
+    fileNum = getNumberFromFilename(origFileName)
+
+    if fileNum >= 10000:
+        return "testcase" + str(fileNum % 10000) + ".txt"
+    else:
+        return origFileName
+
+
+def getFileNameToUseToAvoidCollision(targetFolder, origFileName):
+    if os.path.exists(os.path.join(targetFolder, origFileName)):
+        fileNum = getNumberFromFilename(origFileName)
+
+        InitialAddition = 100000
+        increment = 10000
+        i = 0
+        while True:
+            newFileNum = fileNum + InitialAddition + i * increment
+
+            newFileName = "testcase" + str(newFileNum) + ".txt"
+
+            if not os.path.exists(os.path.join(targetFolder, newFileName)):
+                break
+            else:
+                i = i + 1
+
+        return newFileName
+    else:
+        return origFileName
+
+
+def getNumberFromFilename(filename):
+    testCaseNumbers = re.findall(r'\d+', filename)
+
+    if len(testCaseNumbers) != 1:
+        print("Error: test case doesn't have 1 number")
+        exit(0)
+
+    else:
+        return int(testCaseNumbers[0])
+
 
 def main():
-
     parser = argparse.ArgumentParser(description=
                                      "Move labelled test cases to a new folder for further analysis.\n"
                                      "This needs an output file combined the relevant label.\n"
@@ -44,14 +87,14 @@ def main():
     for key in outputTestcases:
 
         if outputTestcases.get(key).hasCustomLabel:
-
             print(key)
 
-            # TODO: handle filename collisions!
+            destFileNameToUse = getFileNameToUseToAvoidCollision(targetFolder, outputTestcases[key].filename)
+
             shutil.copyfile(
                 os.path.join(Constants.baseTestFolderPath, outputTestcases[key].getOrigFolderOfTestcase(),
                              outputTestcases[key].filename),
-                os.path.join(targetFolder, outputTestcases[key].filename))
+                os.path.join(targetFolder, destFileNameToUse))
 
 
 if __name__ == '__main__':

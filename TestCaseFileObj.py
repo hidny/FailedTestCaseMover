@@ -39,7 +39,7 @@ class TestCaseFileObj:
 
         # print("num: " + str(num))
 
-        if num >= Constants.TESTCASE_NUMBER_WHERE_DEBUG_TESTS_START:
+        if num % 10000 >= Constants.TESTCASE_NUMBER_WHERE_DEBUG_TESTS_START:
             return Constants.DEBUG_FOLDER_NAME
 
         elif self.playerName in Constants.LIST_OF_FOLDERS_WITH_TESTCASES:

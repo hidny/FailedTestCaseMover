@@ -4,6 +4,7 @@ import Constants
 import shutil
 import os
 
+from MLabelledTestcasesToFolder import changeFilenameToUndoCollisionIncrement
 from TestcaseParsers import makeFileObjectFromFile
 
 
@@ -36,9 +37,11 @@ def main():
     for filename in files:
         tmpFileObj = makeFileObjectFromFile(folderPath, filename)
 
+        destFileNameToUse = changeFilenameToUndoCollisionIncrement(filename)
+
         shutil.copyfile(
             os.path.join(folderPath, filename),
-            os.path.join(Constants.baseTestFolderPath, tmpFileObj.getOrigFolderOfTestcase(), filename)
+            os.path.join(Constants.baseTestFolderPath, tmpFileObj.getOrigFolderOfTestcase(), destFileNameToUse)
         )
 
         if not args.keep:
