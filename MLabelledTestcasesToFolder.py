@@ -11,8 +11,8 @@ import re
 def changeFilenameToUndoCollisionIncrement(origFileName):
     fileNum = getNumberFromFilename(origFileName)
 
-    if fileNum >= 10000:
-        return "testcase" + str(fileNum % 10000) + ".txt"
+    if fileNum >= Constants.ORD_MAG_END_OF_TESTCASES:
+        return "testcase" + str(fileNum % Constants.ORD_MAG_END_OF_TESTCASES) + ".txt"
     else:
         return origFileName
 
@@ -21,8 +21,8 @@ def getFileNameToUseToAvoidCollision(targetFolder, origFileName):
     if os.path.exists(os.path.join(targetFolder, origFileName)):
         fileNum = getNumberFromFilename(origFileName)
 
-        InitialAddition = 100000
-        increment = 10000
+        InitialAddition = Constants.TESTCASE_COLLISION_NUMBER_START
+        increment = Constants.ORD_MAG_END_OF_TESTCASES
         i = 0
         while True:
             newFileNum = fileNum + InitialAddition + i * increment
