@@ -153,16 +153,29 @@ if __name__ == '__main__':
     if args.commit:
         commitId = args.commit
 
+    pr = subprocess.Popen("git add *txt", cwd=Constants.gitRepoFolderPath, shell=True, stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE)
+
+    (out, error) = pr.communicate()
+    print("Error out1: " + str(error))
+
     if commitId == '':
-        pr = subprocess.Popen("git diff", cwd=Constants.gitRepoFolderPath, shell=True, stdout=subprocess.PIPE,
+
+        pr = subprocess.Popen("git log --format=%H -n 1", cwd=Constants.gitRepoFolderPath, shell=True, stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
-    else:
-        pr = subprocess.Popen("git diff " + commitId, cwd=Constants.gitRepoFolderPath, shell=True,
+
+        (out, error) = pr.communicate()
+        commitId = str(out).replace("\\n", "").split("'")[1]
+
+        print("Error out2: " + str(error))
+        print("Commit ID: " + commitId)
+
+    pr = subprocess.Popen("git diff " + commitId, cwd=Constants.gitRepoFolderPath, shell=True,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
 
     (out, error) = pr.communicate()
-    print("Error : " + str(error))
+    print("Error out3: " + str(error))
 
     out2 = str(out).replace("\\n", "\n")
     # print("out : " + out2)
